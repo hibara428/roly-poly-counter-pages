@@ -32,9 +32,14 @@ let otherCounts: OtherCounts = reactive({
 
 // methods
 onMounted(async () => {
-  // Fetch counts
+  const today = new Date()
+
   try {
-    await Promise.allSettled([fetchRolyPoly(), fetchOthers()])
+    // Fetch counts
+    await Promise.allSettled([
+      fetchRolyPoly(today.getFullYear(), today.getMonth() + 1, today.getDate()),
+      fetchOthers(today.getFullYear(), today.getMonth() + 1, today.getDate())
+    ])
   } catch (e) {
     if (isAxiosError(e) && e.response?.status === 404) {
       // エラーを表示しない
@@ -47,8 +52,8 @@ onMounted(async () => {
 /**
  * Fetch roly-poly
  */
-const fetchRolyPoly = async () => {
-  const data = await api.getRolyPolyCounts(store.state.user.id)
+const fetchRolyPoly = async (year: number, month: number, day: number) => {
+  const data = await api.getRolyPolyCounts(store.state.user.id, year, month, day)
   rolyPolyCounts.east = data.east
   rolyPolyCounts.west = data.west
   rolyPolyCounts.south = data.south
@@ -57,8 +62,8 @@ const fetchRolyPoly = async () => {
 /**
  * Fetch others
  */
-const fetchOthers = async () => {
-  const data = await api.getOthersCounts(store.state.user.id)
+const fetchOthers = async (year: number, month: number, day: number) => {
+  const data = await api.getOthersCounts(store.state.user.id, year, month, day)
   otherCounts.dog = data.dog
   otherCounts.cat = data.cat
   otherCounts.butterfly = data.butterfly

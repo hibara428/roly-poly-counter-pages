@@ -42,22 +42,12 @@ class BackendApi {
   /**
    * Get roly-poly counts.
    * @param userId
-   * @returns
-   */
-  async getRolyPolyCounts(userId: number): Promise<DirectionCounts> {
-    const response = await axios.get(`${this.baseUrl}/roly-poly/${userId}`)
-    return response.data.data
-  }
-
-  /**
-   * Get roly-poly counts with date.
-   * @param userId
    * @param year
    * @param month
    * @param day
    * @returns
    */
-  async getRolyPolyCountsWithDate(
+  async getRolyPolyCounts(
     userId: number,
     year: number,
     month: number,
@@ -83,22 +73,12 @@ class BackendApi {
   /**
    * Get others counts.
    * @param userId
-   * @returns
-   */
-  async getOthersCounts(userId: number): Promise<OtherCounts> {
-    const response = await axios.get(`${this.baseUrl}/others/${userId}`)
-    return response.data.data
-  }
-
-  /**
-   * Get others counts with date.
-   * @param userId
    * @param year
    * @param month
    * @param day
    * @returns
    */
-  async getOthersCountsWithDate(
+  async getOthersCounts(
     userId: number,
     year: number,
     month: number,

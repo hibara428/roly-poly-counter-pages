@@ -60,14 +60,14 @@ const selectDate = async (date: Date) => {
   }
 }
 const fetchRolyPolyWithDate = async (year: number, month: number, day: number) => {
-  const data = await api.getRolyPolyCountsWithDate(store.state.user.id, year, month, day)
+  const data = await api.getRolyPolyCounts(store.state.user.id, year, month, day)
   rolyPolyCounts.east = data.east
   rolyPolyCounts.west = data.west
   rolyPolyCounts.south = data.south
   rolyPolyCounts.north = data.north
 }
 const fetchOthersWithDate = async (year: number, month: number, day: number) => {
-  const data = await api.getOthersCountsWithDate(store.state.user.id, year, month, day)
+  const data = await api.getOthersCounts(store.state.user.id, year, month, day)
   otherCounts.dog = data.dog
   otherCounts.cat = data.cat
   otherCounts.butterfly = data.butterfly
