@@ -1,113 +1,63 @@
 /**
  * State
  */
-export interface UserInfo {
+export type UserInfo = {
   id: number
   email: string
 }
-export interface State {
+export type State = {
   errors: string[]
   messages: string[]
   user: UserInfo
 }
 
 /**
- * Types
+ * Data
  */
 export type Direction = 'east' | 'west' | 'south' | 'north'
-export interface DirectionCounts {
+export type DirectionCounts = {
   east: number
   west: number
   south: number
   north: number
 }
 export type OtherObjects = 'dog' | 'cat' | 'butterfly'
-export interface OtherCounts {
+export type OtherCounts = {
   dog: number
   cat: number
   butterfly: number
-}
-export class Stats {
-  rolyPoly: DirectionCounts
-  others: OtherCounts
-
-  /**
-   * Constructor.
-   *
-   * @param rolyPoly
-   * @param others
-   */
-  constructor(rolyPoly?: DirectionCounts, others?: OtherCounts) {
-    this.rolyPoly = {
-      east: rolyPoly?.east || 0,
-      west: rolyPoly?.west || 0,
-      south: rolyPoly?.south || 0,
-      north: rolyPoly?.north || 0
-    }
-    this.others = {
-      dog: others?.dog || 0,
-      cat: others?.cat || 0,
-      butterfly: others?.butterfly || 0
-    }
-  }
-
-  /**
-   * Merge stats.
-   *
-   * @param stats
-   * @returns
-   */
-  merge(stats: Stats): Stats {
-    this.rolyPoly.east += stats.rolyPoly.east
-    this.rolyPoly.west += stats.rolyPoly.west
-    this.rolyPoly.south += stats.rolyPoly.south
-    this.rolyPoly.north += stats.rolyPoly.north
-    if (!this.others?.dog) {
-      this.others.dog = 0
-    }
-    this.others.dog += stats.others?.dog || 0
-    if (!this.others?.cat) {
-      this.others.cat = 0
-    }
-    this.others.cat += stats.others?.cat || 0
-    if (!this.others?.butterfly) {
-      this.others.butterfly = 0
-    }
-    this.others.butterfly += stats.others?.butterfly || 0
-    return this
-  }
 }
 
 /**
  * Props
  */
-export interface DailyCountsTableProps {
+export type DailyCountsTableProps = {
   rolyPolyCounts: DirectionCounts
   otherCounts: OtherCounts
 }
-export interface RolyPolyCountsProps {
+export type RolyPolyCountsProps = {
   counts: DirectionCounts
 }
-export interface OtherCountsProps {
+export type OtherCountsProps = {
   counts: OtherCounts
 }
-export interface StatsTableProps {
+export type StatsTableProps = {
   rolyPolyCounts: DirectionCounts
   otherCounts: OtherCounts
 }
-export interface RolyPolyStatsProps {
+export type RolyPolyStatsProps = {
   counts: DirectionCounts
 }
-export interface OtherStatsProps {
+export type OtherStatsProps = {
   counts: OtherCounts
 }
-export interface YearsSelectProps {
+export type YearsSelectProps = {
   startYear: number
 }
 
 /**
  * API
  */
-export interface BaseApiResponse {
+export type BaseApiResponse = {
   message: string
 }
