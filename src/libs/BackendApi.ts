@@ -104,7 +104,7 @@ class BackendApi {
     month: number,
     day: number
   ): Promise<OtherCounts> {
-    const response = await axios.get(`${this.baseUrl}/roly-poly/${userId}/${year}/${month}/${day}`)
+    const response = await axios.get(`${this.baseUrl}/others/${userId}/${year}/${month}/${day}`)
     return response.data.data
   }
 
