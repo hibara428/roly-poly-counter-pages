@@ -24,7 +24,7 @@ class BackendApi {
    * @returns
    */
   async getUserByEmail(email: string): Promise<UserInfo> {
-    const response = await axios.get(`${this.baseUrl}/users?email=${email}`)
+    const response = await axios.get(`${this.baseUrl}/users?email=${encodeURIComponent(email)}`)
     return response.data.data
   }
 
