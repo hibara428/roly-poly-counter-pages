@@ -24,7 +24,11 @@ class BackendApi {
    * @returns
    */
   async getUserByEmail(email: string): Promise<UserInfo> {
-    const response = await axios.get(`${this.baseUrl}/users?email=${encodeURIComponent(email)}`)
+    const response = await axios.get(`${this.baseUrl}/users`, {
+      params: {
+        email: email
+      }
+    })
     return response.data.data
   }
 
@@ -53,7 +57,13 @@ class BackendApi {
     month: number,
     day: number
   ): Promise<DirectionCounts> {
-    const response = await axios.get(`${this.baseUrl}/roly-poly/${userId}/${year}/${month}/${day}`)
+    const response = await axios.get(`${this.baseUrl}/roly-poly/${userId}`, {
+      params: {
+        year: year,
+        month: month,
+        day: day
+      }
+    })
     return response.data.data
   }
 
@@ -84,7 +94,13 @@ class BackendApi {
     month: number,
     day: number
   ): Promise<OtherCounts> {
-    const response = await axios.get(`${this.baseUrl}/others/${userId}/${year}/${month}/${day}`)
+    const response = await axios.get(`${this.baseUrl}/others/${userId}`, {
+      params: {
+        year: year,
+        month: month,
+        day: day
+      }
+    })
     return response.data.data
   }
 
