@@ -40,16 +40,31 @@ const reset = () => {
   otherCounts.butterfly = 0
 }
 const selectDate = async (date: Date) => {
-  try {
-    await Promise.all([fetchRolyPolyWithDate(date), fetchOthersWithDate(date)])
-  } catch (e) {
-    if (isAxiosError(e) && e.response?.status === 404) {
-      store.state.messages.push('指定日時のデータは存在しません。')
-    } else if (e instanceof Error) {
-      store.state.errors.push('エラーが発生しました。')
-      console.error(e.message)
-    }
-    reset()
+  // Data reset.
+  reset()
+
+  // Fetch data.
+  const promises = [fetchRolyPolyWithDate(date), fetchOthersWithDate(date)]
+  const results = await Promise.allSettled(promises)
+  const errors = results
+    .map((result) => {
+      return result.status === 'rejected' ? result.reason : null
+    })
+    .filter((error) => {
+      return error !== null
+    })
+  if (errors.length <= 0) {
+    return
+  }
+
+  // Parse errors.
+  const notFoundErrors = errors.filter((error) => {
+    return isAxiosError(error) && error.response?.status === 404
+  })
+  if (notFoundErrors.length == errors.length) {
+    store.state.messages = ['指定日時のデータは存在しません。']
+  } else {
+    store.state.errors = ['エラーが発生しました。']
   }
 }
 const fetchRolyPolyWithDate = async (day: Date) => {

@@ -33,18 +33,7 @@ let otherCounts: OtherCounts = reactive({
 // methods
 onMounted(async () => {
   const today = new Date()
-
-  try {
-    // Fetch counts
-    await Promise.allSettled([fetchRolyPoly(today), fetchOthers(today)])
-  } catch (e) {
-    if (isAxiosError(e) && e.response?.status === 404) {
-      // エラーを表示しない
-    } else if (e instanceof Error) {
-      store.state.errors.push('エラーが発生しました。')
-      console.error(e.message)
-    }
-  }
+  await Promise.allSettled([fetchRolyPoly(today), fetchOthers(today)])
 })
 /**
  * Fetch roly-poly
