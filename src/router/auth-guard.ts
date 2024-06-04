@@ -14,16 +14,20 @@ export const authenticationGuard = (router: Router) => {
       return true
     }
 
+    // Local env
+    if (process.env.NODE_ENV === 'local') {
+      store.state.user = {
+        id: 1,
+        email: 'hibara428@gmail.com'
+      }
+      return true
+    }
+
     // Get a token from cookie.
-    const token =
-      process.env.NODE_ENV === 'local'
-        ? process.env.VUE_APP_LOCAL_TOKEN
-        : VueCookieNext.getCookie(cookieName)
+    const token = VueCookieNext.getCookie(cookieName)
     if (!token) {
       return { name: 'logout' }
     }
-
-    // Get an e-mail from token.
     const email = getEmailFromToken(token)
 
     try {

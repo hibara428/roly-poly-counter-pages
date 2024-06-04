@@ -14,7 +14,6 @@ import DailyCountsTable from '@/components/DailyCountsTable.vue'
 import CounterPanel from '@/components/CounterPanel.vue'
 import { Direction, DirectionCounts, OtherCounts, OtherObjects } from '@/types'
 import BackendApi from '@/libs/BackendApi'
-import { format } from '@formkit/tempo'
 
 const store = useStore(key)
 const api = new BackendApi(process.env.VUE_APP_API_URL)
