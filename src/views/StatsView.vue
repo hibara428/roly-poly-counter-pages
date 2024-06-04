@@ -40,15 +40,8 @@ const reset = () => {
   otherCounts.butterfly = 0
 }
 const selectDate = async (date: Date) => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-
   try {
-    await Promise.all([
-      fetchRolyPolyWithDate(year, month, day),
-      fetchOthersWithDate(year, month, day)
-    ])
+    await Promise.all([fetchRolyPolyWithDate(date), fetchOthersWithDate(date)])
   } catch (e) {
     if (isAxiosError(e) && e.response?.status === 404) {
       store.state.messages.push('指定日時のデータは存在しません。')
@@ -59,15 +52,15 @@ const selectDate = async (date: Date) => {
     reset()
   }
 }
-const fetchRolyPolyWithDate = async (year: number, month: number, day: number) => {
-  const data = await api.getRolyPolyCounts(store.state.user.id, year, month, day)
+const fetchRolyPolyWithDate = async (day: Date) => {
+  const data = await api.getRolyPolyCounts(store.state.user.id, day)
   rolyPolyCounts.east = data.east
   rolyPolyCounts.west = data.west
   rolyPolyCounts.south = data.south
   rolyPolyCounts.north = data.north
 }
-const fetchOthersWithDate = async (year: number, month: number, day: number) => {
-  const data = await api.getOthersCounts(store.state.user.id, year, month, day)
+const fetchOthersWithDate = async (day: Date) => {
+  const data = await api.getOthersCounts(store.state.user.id, day)
   otherCounts.dog = data.dog
   otherCounts.cat = data.cat
   otherCounts.butterfly = data.butterfly

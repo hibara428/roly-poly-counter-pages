@@ -6,6 +6,7 @@ import {
   OtherObjects,
   UserInfo
 } from '@/types'
+import { format } from '@formkit/tempo'
 import axios from 'axios'
 
 class BackendApi {
@@ -45,23 +46,15 @@ class BackendApi {
 
   /**
    * Get roly-poly counts.
+   *
    * @param userId
-   * @param year
-   * @param month
    * @param day
    * @returns
    */
-  async getRolyPolyCounts(
-    userId: number,
-    year: number,
-    month: number,
-    day: number
-  ): Promise<DirectionCounts> {
+  async getRolyPolyCounts(userId: number, day: Date): Promise<DirectionCounts> {
     const response = await axios.get(`${this.baseUrl}/roly-poly/${userId}`, {
       params: {
-        year: year,
-        month: month,
-        day: day
+        day: format(day, 'YYYY-MM-DD')
       }
     })
     return response.data.data
@@ -69,36 +62,31 @@ class BackendApi {
 
   /**
    * Count up roly-poly.
+   *
    * @param userId
    * @param direction
+   * @param day
    * @returns
    */
-  async countUpRolyPoly(userId: number, direction: Direction): Promise<BaseApiResponse> {
+  async countUpRolyPoly(userId: number, direction: Direction, day: Date): Promise<BaseApiResponse> {
     const response = await axios.post(`${this.baseUrl}/roly-poly/${userId}`, {
-      direction: direction
+      direction: direction,
+      day: format(day, 'YYYY-MM-DD')
     })
     return response.data
   }
 
   /**
    * Get others counts.
+   *
    * @param userId
-   * @param year
-   * @param month
    * @param day
    * @returns
    */
-  async getOthersCounts(
-    userId: number,
-    year: number,
-    month: number,
-    day: number
-  ): Promise<OtherCounts> {
+  async getOthersCounts(userId: number, day: Date): Promise<OtherCounts> {
     const response = await axios.get(`${this.baseUrl}/others/${userId}`, {
       params: {
-        year: year,
-        month: month,
-        day: day
+        day: format(day, 'YYYY-MM-DD')
       }
     })
     return response.data.data
@@ -106,13 +94,20 @@ class BackendApi {
 
   /**
    * Count up others.
+   *
    * @param userId
    * @param otherObject
+   * @param day
    * @returns
    */
-  async countUpOthers(userId: number, otherObject: OtherObjects): Promise<BaseApiResponse> {
+  async countUpOthers(
+    userId: number,
+    otherObject: OtherObjects,
+    day: Date
+  ): Promise<BaseApiResponse> {
     const response = await axios.post(`${this.baseUrl}/others/${userId}`, {
-      object: otherObject
+      object: otherObject,
+      day: format(day, 'YYYY-MM-DD')
     })
     return response.data
   }

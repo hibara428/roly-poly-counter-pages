@@ -14,6 +14,7 @@ import DailyCountsTable from '@/components/DailyCountsTable.vue'
 import CounterPanel from '@/components/CounterPanel.vue'
 import { Direction, DirectionCounts, OtherCounts, OtherObjects } from '@/types'
 import BackendApi from '@/libs/BackendApi'
+import { format } from '@formkit/tempo'
 
 const store = useStore(key)
 const api = new BackendApi(process.env.VUE_APP_API_URL)
@@ -36,10 +37,7 @@ onMounted(async () => {
 
   try {
     // Fetch counts
-    await Promise.allSettled([
-      fetchRolyPoly(today.getFullYear(), today.getMonth() + 1, today.getDate()),
-      fetchOthers(today.getFullYear(), today.getMonth() + 1, today.getDate())
-    ])
+    await Promise.allSettled([fetchRolyPoly(today), fetchOthers(today)])
   } catch (e) {
     if (isAxiosError(e) && e.response?.status === 404) {
       // エラーを表示しない
@@ -52,8 +50,8 @@ onMounted(async () => {
 /**
  * Fetch roly-poly
  */
-const fetchRolyPoly = async (year: number, month: number, day: number) => {
-  const data = await api.getRolyPolyCounts(store.state.user.id, year, month, day)
+const fetchRolyPoly = async (day: Date) => {
+  const data = await api.getRolyPolyCounts(store.state.user.id, day)
   rolyPolyCounts.east = data.east
   rolyPolyCounts.west = data.west
   rolyPolyCounts.south = data.south
@@ -62,8 +60,8 @@ const fetchRolyPoly = async (year: number, month: number, day: number) => {
 /**
  * Fetch others
  */
-const fetchOthers = async (year: number, month: number, day: number) => {
-  const data = await api.getOthersCounts(store.state.user.id, year, month, day)
+const fetchOthers = async (day: Date) => {
+  const data = await api.getOthersCounts(store.state.user.id, day)
   otherCounts.dog = data.dog
   otherCounts.cat = data.cat
   otherCounts.butterfly = data.butterfly
@@ -87,9 +85,10 @@ const countUpRolyPoly = async (direction: Direction) => {
       rolyPolyCounts.north++
       break
   }
+  const date = new Date()
 
   try {
-    await api.countUpRolyPoly(store.state.user.id, direction)
+    await api.countUpRolyPoly(store.state.user.id, direction, date)
   } catch (e) {
     if (e instanceof Error) {
       store.state.errors.push('エラーが発生しました。')
@@ -113,9 +112,10 @@ const countUpOthers = async (otherObject: OtherObjects) => {
       otherCounts.butterfly++
       break
   }
+  const date = new Date()
 
   try {
-    await api.countUpOthers(store.state.user.id, otherObject)
+    await api.countUpOthers(store.state.user.id, otherObject, date)
   } catch (e) {
     if (e instanceof Error) {
       store.state.errors.push('エラーが発生しました。')
